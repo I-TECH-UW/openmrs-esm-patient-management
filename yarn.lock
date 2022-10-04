@@ -3541,6 +3541,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@openmrs/esm-client-registry-app@workspace:packages/esm-client-registry-app":
+  version: 0.0.0-use.local
+  resolution: "@openmrs/esm-client-registry-app@workspace:packages/esm-client-registry-app"
+  dependencies:
+    "@carbon/react": ^1.12.0
+    lodash-es: ^4.17.15
+    webpack: ^5.74.0
+  peerDependencies:
+    "@openmrs/esm-framework": 4.x
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
+  languageName: unknown
+  linkType: soft
+
 "@openmrs/esm-config@npm:^4.0.2":
   version: 4.0.2
   resolution: "@openmrs/esm-config@npm:4.0.2"
