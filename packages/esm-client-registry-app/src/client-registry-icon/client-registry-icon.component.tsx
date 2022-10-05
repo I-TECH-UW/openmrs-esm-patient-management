@@ -30,12 +30,12 @@ const ClientRegistryLaunch: React.FC<ClientRegistryLaunchProps> = () => {
       }
       setShowSearchInput(false);
     } else {
-      setShowSearchInput(true);
+      setShowSearchInput(false);
     }
   }, [isSearchPage, setShowSearchInput, showSearchInput]);
 
   const resetToInitialState = useCallback(() => {
-    setShowSearchInput(true);
+    setShowSearchInput(false);
     setCanClickOutside(false);
   }, [setShowSearchInput, setCanClickOutside]);
 

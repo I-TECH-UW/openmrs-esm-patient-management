@@ -66,14 +66,7 @@ function setupOpenMRS() {
         slot: 'top-nav-actions-slot',
         order: 1,
         load: getAsyncLifecycle(() => import('./client-registry-icon'), options),
-      },
-      {
-        // This extension renders the a Patient-Search Button, which when clicked, opens the search bar in an overlay.
-        id: 'client-registry-button',
-        slot: 'client-registry-button-slot',
-        load: getAsyncLifecycle(() => import('./client-registry-search-button/client-registry-search-button.component'), options),
-        offline: true,
-      },
+      }
     ],
   };
 }

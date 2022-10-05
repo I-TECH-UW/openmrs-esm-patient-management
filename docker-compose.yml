@@ -3,7 +3,7 @@ version: '3.8'
 services:
   o3:
     container_name: o3
-    image: openmrs/openmrs-reference-application-3-gateway:nightly
+    image: openmrs/openmrs-reference-application-3-gateway:dev3
     depends_on:
       - o3-frontend
       - o3-backend
@@ -58,7 +58,7 @@ services:
   o3-db:
     container_name: o3-db
     hostname: o3-db
-    image: mariadb:latest
+    image: mariadb:10.8.5
     platform: linux/arm64/v8
     command: "mysqld --character-set-server=utf8 --collation-server=utf8_general_ci"
     environment:
