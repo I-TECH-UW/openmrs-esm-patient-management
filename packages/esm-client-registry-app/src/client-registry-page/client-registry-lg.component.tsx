@@ -3,28 +3,28 @@ import { useTranslation } from 'react-i18next';
 import isEmpty from 'lodash-es/isEmpty';
 import { interpolateString, navigate, useConfig, usePagination } from '@openmrs/esm-framework';
 import Pagination from '../ui-components/pagination/pagination.component';
-import styles from './patient-search-lg.scss';
+import styles from './client-registry-lg.scss';
 import {
   EmptyQueryIllustration,
   EmptySearchResultsIllustration,
   FetchErrorIllustration,
   LoadingSearchResults,
-  PatientSearchResults,
-} from './patient-search-views';
-import { SearchedPatient } from '../types';
+  ClientRegistryResults,
+} from './client-registry-views';
+import { R4 } from '@ahryman40k/ts-fhir-types';
 
-interface PatientSearchComponentProps {
+interface ClientRegistryComponentProps {
   query: string;
   inTabletOrOverlay?: boolean;
   stickyPagination?: boolean;
   selectPatientAction?: (patientUuid: string) => void;
   hidePanel?: () => void;
-  searchResults: Array<SearchedPatient>;
+  searchResults: R4.IBundle_Entry[];
   isLoading: boolean;
   fetchError: Error;
 }
 
-const PatientSearchComponent: React.FC<PatientSearchComponentProps> = ({
+const ClientRegistryComponent: React.FC<ClientRegistryComponentProps> = ({
   query,
   stickyPagination,
   selectPatientAction,
@@ -84,7 +84,7 @@ const PatientSearchComponent: React.FC<PatientSearchComponentProps> = ({
       return <EmptySearchResultsIllustration inTabletOrOverlay={inTabletOrOverlay} />;
     }
 
-    return <PatientSearchResults searchResults={results} handlePatientSelection={handlePatientSelection} />;
+    return <ClientRegistryResults searchResults={results} handlePatientSelection={handlePatientSelection} />;
   }, [query, isLoading, inTabletOrOverlay, results, handlePatientSelection, fetchError]);
 
   return (
@@ -114,4 +114,4 @@ const PatientSearchComponent: React.FC<PatientSearchComponentProps> = ({
   );
 };
 
-export default PatientSearchComponent;
+export default ClientRegistryComponent;

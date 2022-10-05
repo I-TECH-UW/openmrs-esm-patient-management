@@ -1,9 +1,11 @@
+import { R4 } from '@ahryman40k/ts-fhir-types';
+import { PatientGenderKind } from '@ahryman40k/ts-fhir-types/lib/R4';
 import React, { useEffect, useMemo, useState } from 'react';
-import { useClientRegistrySearch, useGetPatientAttributePhoneUuid, usePatientSearchInfinite } from '../client-registry-search.resource';
+import { useClientRegistrySearch } from '../client-registry-search.resource';
 import { AdvancedPatientSearchState } from '../types';
 import styles from './advanced-patient-search.scss';
 import { initialState } from './advanced-search-reducer';
-import PatientSearchComponent from './patient-search-lg.component';
+import ClientRegistryComponent from './client-registry-lg.component';
 import RefineSearch from './refine-search.component';
 
 interface ClientRegistrySearchProps {
@@ -40,72 +42,72 @@ const ClientRegistrySearchComponent: React.FC<ClientRegistrySearchProps> = ({
   } = useClientRegistrySearch(query, !!query);
 
   const filteredResults = useMemo(() => {
-    if (searchResults && filtersApplied) {
-      return searchResults.filter((patient) => {
+    if (searchResults.entry && filtersApplied) {
+      return searchResults.entry.filter((patient: R4.IPatient) => {
         if (filters.gender !== 'any') {
-          if (filters.gender === 'male' && patient.person.gender !== 'M') {
+          if (filters.gender === 'male' && patient.gender !== PatientGenderKind._male) {
             return false;
           }
-          if (filters.gender === 'female' && patient.person.gender !== 'F') {
+          if (filters.gender === 'female' && patient.gender !== PatientGenderKind._female) {
             return false;
           }
-          if (filters.gender === 'other' && patient.person.gender !== 'O') {
+          if (filters.gender === 'other' && patient.gender !== PatientGenderKind._other) {
             return false;
           }
-          if (filters.gender === 'unknown' && patient.person.gender !== 'U') {
-            return false;
-          }
-        }
-
-        if (filters.dateOfBirth) {
-          const dayOfBirth = new Date(patient.person.birthdate).getDate();
-          if (dayOfBirth !== filters.dateOfBirth) {
+          if (filters.gender === 'unknown' && patient.gender !== PatientGenderKind._unknown) {
             return false;
           }
         }
 
-        if (filters.monthOfBirth) {
-          const monthOfBirth = new Date(patient.person.birthdate).getMonth() + 1;
-          if (monthOfBirth !== filters.monthOfBirth) {
-            return false;
-          }
-        }
+        // if (filters.dateOfBirth) {
+        //   const dayOfBirth = new Date(patient.birthdate).getDate();
+        //   if (dayOfBirth !== filters.dateOfBirth) {
+        //     return false;
+        //   }
+        // }
 
-        if (filters.yearOfBirth) {
-          const yearOfBirth = new Date(patient.person.birthdate).getFullYear();
-          if (yearOfBirth !== filters.yearOfBirth) {
-            return false;
-          }
-        }
+        // if (filters.monthOfBirth) {
+        //   const monthOfBirth = new Date(patient.person.birthdate).getMonth() + 1;
+        //   if (monthOfBirth !== filters.monthOfBirth) {
+        //     return false;
+        //   }
+        // }
 
-        if (filters.postcode) {
-          if (!patient.person.addresses.some((address) => address.postalCode === filters.postcode)) {
-            return false;
-          }
-        }
+        // if (filters.yearOfBirth) {
+        //   const yearOfBirth = new Date(patient.person.birthdate).getFullYear();
+        //   if (yearOfBirth !== filters.yearOfBirth) {
+        //     return false;
+        //   }
+        // }
 
-        if (filters.age) {
-          if (patient.person.age !== filters.age) {
-            return false;
-          }
-        }
+        // if (filters.postcode) {
+        //   if (!patient.person.addresses.some((address) => address.postalCode === filters.postcode)) {
+        //     return false;
+        //   }
+        // }
 
-        if (filters.phoneNumber) {
-          if (
-            !(
-              patient.attributes.find((attr) => attr.attributeType.display === 'Telephone Number')?.value ===
-              filters.phoneNumber.toString()
-            )
-          ) {
-            return false;
-          }
-        }
+        // if (filters.age) {
+        //   if (patient.person.age !== filters.age) {
+        //     return false;
+        //   }
+        // }
+
+        // if (filters.phoneNumber) {
+        //   if (
+        //     !(
+        //       patient.attributes.find((attr) => attr.attributeType.display === 'Telephone Number')?.value ===
+        //       filters.phoneNumber.toString()
+        //     )
+        //   ) {
+        //     return false;
+        //   }
+        // }
 
         return true;
       });
     }
 
-    return searchResults;
+    return searchResults.entry;
   }, [filtersApplied, filters, searchResults]);
 
   return (
@@ -122,7 +124,7 @@ const ClientRegistrySearchComponent: React.FC<ClientRegistrySearchProps> = ({
         className={`${
           inTabletOrOverlay ? styles.patientSearchResultsTabletOrOverlay : styles.patientSearchResultsDesktop
         }`}>
-        <PatientSearchComponent
+        <ClientRegistryComponent
           query={query}
           stickyPagination={stickyPagination}
           selectPatientAction={selectPatientAction}

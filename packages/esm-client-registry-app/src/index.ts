@@ -62,23 +62,16 @@ function setupOpenMRS() {
     ],
     extensions: [
       {
-        id: 'patient-search-icon',
+        id: 'client-registry-icon',
         slot: 'top-nav-actions-slot',
-        order: 0,
+        order: 1,
         load: getAsyncLifecycle(() => import('./client-registry-icon'), options),
       },
       {
         // This extension renders the a Patient-Search Button, which when clicked, opens the search bar in an overlay.
-        id: 'patient-search-button',
-        slot: 'patient-search-button-slot',
-        load: getAsyncLifecycle(() => import('./patient-search-button/patient-search-button.component'), options),
-        offline: true,
-      },
-      {
-        // P.S. This extension is not compatible with the tablet view.
-        id: 'patient-search-bar',
-        slot: 'patient-search-bar-slot',
-        load: getAsyncLifecycle(() => import('./compact-patient-search-extension'), options),
+        id: 'client-registry-button',
+        slot: 'client-registry-button-slot',
+        load: getAsyncLifecycle(() => import('./client-registry-search-button/client-registry-search-button.component'), options),
         offline: true,
       },
     ],

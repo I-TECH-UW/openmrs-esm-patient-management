@@ -5,13 +5,14 @@ import { useRelationships } from './relationships.resource';
 import { usePatientContactAttributes } from '../hooks/usePatientAttributes';
 import { Address as AddressType } from '../../../types';
 import styles from './contact-details.scss';
+import { R4 } from '@ahryman40k/ts-fhir-types';
 
 interface ContactDetailsProps {
-  address: Array<AddressType>;
+  address: Array<R4.IAddress>;
   patientId: string;
 }
 
-const Address: React.FC<{ address: AddressType }> = ({ address }) => {
+const Address: React.FC<{ address: R4.IAddress }> = ({ address }) => {
   const { t } = useTranslation();
 
   return (
@@ -21,9 +22,9 @@ const Address: React.FC<{ address: AddressType }> = ({ address }) => {
         {address ? (
           <>
             <li>{address.postalCode}</li>
-            <li>{address.address1}</li>
-            <li>{address.cityVillage}</li>
-            <li>{address.stateProvince}</li>
+            <li>{address.line}</li>
+            <li>{address.city}</li>
+            <li>{address.state}</li>
             <li>{address.country}</li>
           </>
         ) : (
@@ -87,7 +88,7 @@ const Relationships: React.FC<{ patientId: string }> = ({ patientId }) => {
 };
 
 const ContactDetails: React.FC<ContactDetailsProps> = ({ address, patientId }) => {
-  const currentAddress = address ? address.find((a) => a.preferred) : undefined;
+  const currentAddress = address ? address[0] : undefined;
 
   return (
     <div className={styles.contactDetails}>

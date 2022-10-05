@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Search } from '@carbon/react';
-import styles from './patient-search-bar.scss';
+import styles from './client-registry-search-bar.scss';
 
 interface ClientRegistrySearchBarProps {
   buttonProps?: Object;
@@ -12,7 +12,7 @@ interface ClientRegistrySearchBarProps {
   small?: boolean;
 }
 
-const PatientSearchBar: React.FC<ClientRegistrySearchBarProps> = ({
+const ClientRegistrySearchBar: React.FC<ClientRegistrySearchBarProps> = ({
   buttonProps,
   initialSearchTerm,
   onChange,
@@ -61,4 +61,4 @@ const PatientSearchBar: React.FC<ClientRegistrySearchBarProps> = ({
   );
 };
 
-export default PatientSearchBar;
+export default ClientRegistrySearchBar;

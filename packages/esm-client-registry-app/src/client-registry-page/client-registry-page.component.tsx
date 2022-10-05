@@ -1,14 +1,13 @@
 import React, { useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { isDesktop, navigate, useLayoutType } from '@openmrs/esm-framework';
-import PatientSearchComponent from './patient-search-lg.component';
-import styles from './patient-search-page.scss';
-import PatientSearchOverlay from '../patient-search-overlay/patient-search-overlay.component';
+import styles from './client-registry-page.scss';
+import ClientRegistryOverlay from '../client-registry-overlay/client-registry-overlay.component';
 import ClientRegistrySearchComponent from './client-registry-search.component';
 
-interface PatientSearchPageComponentProps {}
+interface ClientRegistryPageComponentProps {}
 
-const PatientSearchPageComponent: React.FC<PatientSearchPageComponentProps> = () => {
+const ClientRegistryPageComponent: React.FC<ClientRegistryPageComponentProps> = () => {
   const [searchParams] = useSearchParams();
   const layout = useLayoutType();
 
@@ -32,8 +31,8 @@ const PatientSearchPageComponent: React.FC<PatientSearchPageComponentProps> = ()
       </div>
     </div>
   ) : (
-    <PatientSearchOverlay onClose={handleCloseOverlay} query={searchParams?.get('query') ?? ''} />
+    <ClientRegistryOverlay onClose={handleCloseOverlay} query={searchParams?.get('query') ?? ''} />
   );
 };
 
-export default PatientSearchPageComponent;
+export default ClientRegistryPageComponent;

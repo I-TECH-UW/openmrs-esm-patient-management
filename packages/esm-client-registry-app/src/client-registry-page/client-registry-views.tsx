@@ -1,10 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import styles from './patient-search-lg.scss';
+import styles from './client-registry-lg.scss';
 import { Layer, Tile } from '@carbon/react';
 import EmptyDataIllustration from '../ui-components/empty-data-illustration.component';
 import PatientBanner, { PatientBannerSkeleton } from './patient-banner/banner/patient-banner.component';
 import { SearchedPatient } from '../types';
+import { R4 } from '@ahryman40k/ts-fhir-types';
 
 interface EmptyQueryIllustrationProps {
   inTabletOrOverlay: boolean;
@@ -92,23 +93,23 @@ export const EmptySearchResultsIllustration: React.FC<EmptySearchResultsIllustra
   );
 };
 
-interface PatientSearchResultsProps {
-  searchResults: SearchedPatient[];
+interface ClientRegistryResultsProps {
+  searchResults: R4.IBundle_Entry[];
   handlePatientSelection: (evt: any, patientUuid: string) => void;
 }
 
-export const PatientSearchResults: React.FC<PatientSearchResultsProps> = ({
+export const ClientRegistryResults: React.FC<ClientRegistryResultsProps> = ({
   searchResults,
   handlePatientSelection,
 }) => {
   const { t } = useTranslation();
   return (
     <div className={styles.results}>
-      {searchResults.map((patient, indx) => (
+      {searchResults.map((patient: R4.IPatient, indx) => (
         <PatientBanner
           key={indx}
           selectPatientAction={handlePatientSelection}
-          patientUuid={patient.uuid}
+          patientUuid={patient.id}
           patient={patient}
         />
       ))}

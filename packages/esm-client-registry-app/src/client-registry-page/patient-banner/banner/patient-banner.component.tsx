@@ -16,9 +16,10 @@ import { SearchedPatient } from '../../../types';
 import ContactDetails from '../contact-details/contact-details.component';
 import CustomOverflowMenuComponent from '../ui-components/overflow-menu.component';
 import styles from './patient-banner.scss';
+import { R4 } from '@ahryman40k/ts-fhir-types';
 
 interface PatientBannerProps {
-  patient: SearchedPatient;
+  patient: R4.IPatient;
   patientUuid: string;
   onTransition?: () => void;
   hideActionsOverflow?: boolean;
@@ -45,7 +46,7 @@ const PatientBanner: React.FC<PatientBannerProps> = ({
     [patientUuid, selectPatientAction, onTransition],
   );
 
-  const patientName = patient.person.personName.display;
+  const patientName = patient.name[0].text;
   const patientPhotoSlotState = React.useMemo(() => ({ patientUuid, patientName }), [patientUuid, patientName]);
 
   const [showContactDetails, setShowContactDetails] = React.useState(false);
@@ -100,11 +101,11 @@ const PatientBanner: React.FC<PatientBannerProps> = ({
               />
             </div>
             <div className={styles.demographics}>
-              <span>{getGender(patient.person.gender)}</span> &middot; <span>{age(patient.person.birthdate)}</span>{' '}
-              &middot; <span>{formatDate(parseDate(patient.person.birthdate), { mode: 'wide', time: false })}</span>
+              <span>{getGender(patient.gender)}</span> &middot; <span>{age(patient.birthDate)}</span>{' '}
+              &middot; <span>{formatDate(parseDate(patient.birthDate), { mode: 'wide', time: false })}</span>
             </div>
             <div className={styles.identifiers}>
-              {patient.identifiers?.length ? patient.identifiers.map((i) => i.identifier).join(', ') : '--'}
+              {patient.identifier?.length ? patient.identifier.map((i) => i.value).join(', ') : '--'}
             </div>
           </div>
         </ConfigurableLink>
@@ -148,7 +149,7 @@ const PatientBanner: React.FC<PatientBannerProps> = ({
           )}
         </div>
       </div>
-      {showContactDetails && <ContactDetails address={patient.person.addresses} patientId={patient.uuid} />}
+      {showContactDetails && <ContactDetails address={patient.address} patientId={patient.id} />}
     </>
   );
 };

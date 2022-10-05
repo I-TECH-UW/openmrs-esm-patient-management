@@ -34,6 +34,7 @@
     "url": "https://github.com/openmrs/openmrs-esm-patient-management/issues"
   },
   "dependencies": {
+    "@ahryman40k/ts-fhir-types": "^4.0.39",
     "@carbon/react": "^1.12.0",
     "lodash-es": "^4.17.15"
   },
