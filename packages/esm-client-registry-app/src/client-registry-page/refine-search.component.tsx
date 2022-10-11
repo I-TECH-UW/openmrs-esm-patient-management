@@ -1,11 +1,21 @@
-import React, { useCallback, useReducer, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { ContentSwitcher, Switch, TextInput, DatePicker, DatePickerInput, Button, NumberInput } from '@carbon/react';
-import { ChevronUp, ChevronDown } from '@carbon/react/icons';
-import styles from './refine-search.scss';
-import reducer, { initialState } from './advanced-search-reducer';
-import { AdvancedPatientSearchActionTypes, AdvancedPatientSearchState } from '../types';
-import { useLayoutType } from '@openmrs/esm-framework';
+import {
+  Button,
+  ContentSwitcher,
+  NumberInput,
+  Switch,
+  TextInput,
+} from "@carbon/react";
+import { ChevronDown, ChevronUp } from "@carbon/react/icons";
+import { useLayoutType } from "@openmrs/esm-framework";
+import React, { useCallback, useReducer, useState } from "react";
+import { useTranslation } from "react-i18next";
+
+import {
+  AdvancedPatientSearchActionTypes,
+  AdvancedPatientSearchState,
+} from "../types";
+import reducer, { initialState } from "./advanced-search-reducer";
+import styles from "./refine-search.scss";
 
 interface RefineSearchProps {
   inTabletOrOverlay: boolean;
@@ -13,20 +23,24 @@ interface RefineSearchProps {
   filtersApplied: number;
 }
 
-const RefineSearch: React.FC<RefineSearchProps> = ({ setFilters, inTabletOrOverlay, filtersApplied }) => {
+const RefineSearch: React.FC<RefineSearchProps> = ({
+  setFilters,
+  inTabletOrOverlay,
+  filtersApplied,
+}) => {
   const [formState, formDispatch] = useReducer(reducer, initialState);
   const [showRefineSearchDialog, setShowRefineSearchDialog] = useState(false);
   const { t } = useTranslation();
-  const isTablet = useLayoutType() === 'tablet';
+  const isTablet = useLayoutType() === "tablet";
 
   const handleGenderChange = useCallback(
-    (evt: { name: 'any' | 'male' | 'female' }) => {
+    (evt: { name: "any" | "male" | "female" }) => {
       formDispatch({
         type: AdvancedPatientSearchActionTypes.SET_GENDER,
         gender: evt.name,
       });
     },
-    [formDispatch],
+    [formDispatch]
   );
 
   const handleDateOfBirthChange = useCallback(
@@ -37,7 +51,7 @@ const RefineSearch: React.FC<RefineSearchProps> = ({ setFilters, inTabletOrOverl
         dateOfBirth: date,
       });
     },
-    [formDispatch],
+    [formDispatch]
   );
 
   const handleMonthOfBirthChange = useCallback(
@@ -48,7 +62,7 @@ const RefineSearch: React.FC<RefineSearchProps> = ({ setFilters, inTabletOrOverl
         monthOfBirth: month,
       });
     },
-    [formDispatch],
+    [formDispatch]
   );
 
   const handleYearOfBirthChange = useCallback(
@@ -59,7 +73,7 @@ const RefineSearch: React.FC<RefineSearchProps> = ({ setFilters, inTabletOrOverl
         yearOfBirth: year,
       });
     },
-    [formDispatch],
+    [formDispatch]
   );
 
   const handlePhoneNumberChange = useCallback(
@@ -70,7 +84,7 @@ const RefineSearch: React.FC<RefineSearchProps> = ({ setFilters, inTabletOrOverl
         phoneNumber,
       });
     },
-    [formDispatch],
+    [formDispatch]
   );
 
   const handlePostCodeChange = useCallback(
@@ -80,7 +94,7 @@ const RefineSearch: React.FC<RefineSearchProps> = ({ setFilters, inTabletOrOverl
         postcode: evt.target.value,
       });
     },
-    [formDispatch],
+    [formDispatch]
   );
 
   const handleAgeChange = useCallback(
@@ -91,7 +105,7 @@ const RefineSearch: React.FC<RefineSearchProps> = ({ setFilters, inTabletOrOverl
         age: age,
       });
     },
-    [formDispatch],
+    [formDispatch]
   );
 
   const handleSubmit = useCallback(
@@ -100,7 +114,7 @@ const RefineSearch: React.FC<RefineSearchProps> = ({ setFilters, inTabletOrOverl
       setFilters(formState);
       setShowRefineSearchDialog(false);
     },
-    [formState, setShowRefineSearchDialog, setFilters],
+    [formState, setShowRefineSearchDialog, setFilters]
   );
 
   const handleResetFields = useCallback(() => {
@@ -121,14 +135,28 @@ const RefineSearch: React.FC<RefineSearchProps> = ({ setFilters, inTabletOrOverl
         <div className={styles.refineSearchBanner}>
           {!filtersApplied ? (
             <p className={styles.bodyShort01}>
-              {t('refineSearchTabletBannerText', "Can't find who you're looking for?")}
+              {t(
+                "refineSearchTabletBannerText",
+                "Can't find who you're looking for?"
+              )}
             </p>
           ) : (
             <div className={styles.refineSearchBannerFilterInfo}>
-              <span className={`${styles.filtersAppliedCount} ${styles.bodyShort01}`}>{filtersApplied}</span>{' '}
-              <p className={styles.bodyShort01}>{t('filtersAppliedText', 'search queries added')}</p>
-              <Button kind="ghost" onClick={handleResetFields} className={styles.refineSearchDialogOpener} size="sm">
-                {t('clear', 'Clear')}
+              <span
+                className={`${styles.filtersAppliedCount} ${styles.bodyShort01}`}
+              >
+                {filtersApplied}
+              </span>{" "}
+              <p className={styles.bodyShort01}>
+                {t("filtersAppliedText", "search queries added")}
+              </p>
+              <Button
+                kind="ghost"
+                onClick={handleResetFields}
+                className={styles.refineSearchDialogOpener}
+                size="sm"
+              >
+                {t("clear", "Clear")}
               </Button>
             </div>
           )}
@@ -137,105 +165,131 @@ const RefineSearch: React.FC<RefineSearchProps> = ({ setFilters, inTabletOrOverl
             onClick={toggleShowRefineSearchDialog}
             renderIcon={!showRefineSearchDialog ? ChevronUp : ChevronDown}
             className={styles.refineSearchDialogOpener}
-            size="sm">
-            {t('refineSearch', 'Refine search')}
+            size="sm"
+          >
+            {t("refineSearch", "Refine search")}
           </Button>
         </div>
         {showRefineSearchDialog && (
           <div className={styles.refineSearchDialogContainer}>
             <div className={styles.refineSearchDialog}>
               <div className={styles.refineSearchDialogHeader}>
-                <p className={styles.bodyShort01}>{t('refineSearchHeaderText', 'Add additional search criteria')}</p>
+                <p className={styles.bodyShort01}>
+                  {t(
+                    "refineSearchHeaderText",
+                    "Add additional search criteria"
+                  )}
+                </p>
                 <Button
                   kind="ghost"
                   onClick={toggleShowRefineSearchDialog}
                   renderIcon={ChevronDown}
                   className={styles.refineSearchDialogOpener}
-                  size="sm">
-                  {t('refineSearch', 'Refine search')}
+                  size="sm"
+                >
+                  {t("refineSearch", "Refine search")}
                 </Button>
               </div>
               <form onSubmit={handleSubmit}>
-                <div className={`${styles.padded} ${isTablet && styles.refineSearchDialogGenderSexRow}`}>
+                <div
+                  className={`${styles.padded} ${
+                    isTablet && styles.refineSearchDialogGenderSexRow
+                  }`}
+                >
                   <div className={styles.fieldTabletOrOverlay}>
                     <div className={styles.labelText}>
-                      <label className={`${styles.sexLabelText} ${styles.label01}`} htmlFor="#gender">
-                        {t('sex', 'Sex')}
+                      <label
+                        className={`${styles.sexLabelText} ${styles.label01}`}
+                        htmlFor="#gender"
+                      >
+                        {t("sex", "Sex")}
                       </label>
                     </div>
                     <ContentSwitcher
                       id="gender"
-                      size={isTablet ? 'lg' : 'md'}
+                      size={isTablet ? "lg" : "md"}
                       onChange={handleGenderChange}
-                      selectedIndex={['any', 'male', 'female'].indexOf(formState.gender)}>
-                      <Switch name="any" text={t('any', 'Any')} />
-                      <Switch name="male" text={t('male', 'Male')} />
-                      <Switch name="female" text={t('female', 'Female')} />
+                      selectedIndex={["any", "male", "female"].indexOf(
+                        formState.gender
+                      )}
+                    >
+                      <Switch name="any" text={t("any", "Any")} />
+                      <Switch name="male" text={t("male", "Male")} />
+                      <Switch name="female" text={t("female", "Female")} />
                     </ContentSwitcher>
                     <ContentSwitcher
                       id="gender"
-                      size={isTablet ? 'lg' : 'md'}
+                      size={isTablet ? "lg" : "md"}
                       onChange={handleGenderChange}
-                      selectedIndex={['other', 'unknown'].indexOf(formState.gender)}>
-                      <Switch name="other" text={t('other', 'Other')} />
-                      <Switch name="unknown" text={t('unknown', 'Unknown')} />
+                      selectedIndex={["other", "unknown"].indexOf(
+                        formState.gender
+                      )}
+                    >
+                      <Switch name="other" text={t("other", "Other")} />
+                      <Switch name="unknown" text={t("unknown", "Unknown")} />
                     </ContentSwitcher>
                   </div>
-                  <div className={`${styles.fieldTabletOrOverlay} ${styles.dobFields}`}>
+                  <div
+                    className={`${styles.fieldTabletOrOverlay} ${styles.dobFields}`}
+                  >
                     <NumberInput
                       id="dateOfBirth"
                       placeholder="DD"
-                      value={formState.dateOfBirth || ''}
+                      value={formState.dateOfBirth || ""}
                       onChange={handleDateOfBirthChange}
                       className={styles.dobField}
                       type="number"
-                      label={t('day', 'Day')}
+                      label={t("day", "Day")}
                       min={1}
                       max={31}
                       allowEmpty
                       hideSteppers
-                      size={isTablet ? 'lg' : 'md'}
+                      size={isTablet ? "lg" : "md"}
                     />
                     <NumberInput
                       id="monthOfBirth"
                       placeholder="MM"
-                      value={formState.monthOfBirth || ''}
+                      value={formState.monthOfBirth || ""}
                       onChange={handleMonthOfBirthChange}
                       className={styles.dobField}
                       type="number"
-                      label={t('month', 'Month')}
+                      label={t("month", "Month")}
                       min={1}
                       max={12}
                       allowEmpty
                       hideSteppers
-                      size={isTablet ? 'lg' : 'md'}
+                      size={isTablet ? "lg" : "md"}
                     />
                     <NumberInput
                       id="yearOfBirth"
                       placeholder="YYYY"
-                      value={formState.yearOfBirth || ''}
+                      value={formState.yearOfBirth || ""}
                       onChange={handleYearOfBirthChange}
                       className={styles.dobField}
                       type="number"
-                      label={t('year', 'Year')}
+                      label={t("year", "Year")}
                       allowEmpty
                       hideSteppers
                       min={1800}
                       max={new Date().getFullYear()}
-                      size={isTablet ? 'lg' : 'md'}
+                      size={isTablet ? "lg" : "md"}
                     />
                   </div>
                 </div>
-                <div className={`${styles.padded} ${isTablet && styles.phoneLastVisitRow}`}>
+                <div
+                  className={`${styles.padded} ${
+                    isTablet && styles.phoneLastVisitRow
+                  }`}
+                >
                   <div className={styles.phonePostcode}>
                     <div className={styles.fieldTabletOrOverlay}>
                       <NumberInput
                         id="phoneNumber"
-                        label={t('phoneNumber', 'Phone number')}
+                        label={t("phoneNumber", "Phone number")}
                         onChange={handlePhoneNumberChange}
                         type="number"
-                        value={formState.phoneNumber || ''}
-                        size={isTablet ? 'lg' : 'md'}
+                        value={formState.phoneNumber || ""}
+                        size={isTablet ? "lg" : "md"}
                         allowEmpty
                         hideSteppers
                         min={1}
@@ -244,33 +298,52 @@ const RefineSearch: React.FC<RefineSearchProps> = ({ setFilters, inTabletOrOverl
                     <div className={styles.fieldTabletOrOverlay}>
                       <TextInput
                         id="postcode"
-                        labelText={t('postcode', 'Postcode')}
+                        labelText={t("postcode", "Postcode")}
                         onChange={handlePostCodeChange}
                         value={formState.postcode}
-                        size={isTablet ? 'lg' : 'md'}
+                        size={isTablet ? "lg" : "md"}
                       />
                     </div>
                   </div>
                   <div className={styles.fieldTabletOrOverlay}>
                     <NumberInput
                       id="age"
-                      value={formState.age || ''}
+                      value={formState.age || ""}
                       onChange={handleAgeChange}
-                      size={isTablet ? 'lg' : 'md'}
-                      label={t('age', 'Age')}
+                      size={isTablet ? "lg" : "md"}
+                      label={t("age", "Age")}
                       min={0}
                       allowEmpty
                       hideSteppers
                     />
                   </div>
                 </div>
-                <div className={`${isTablet && styles.paddedButtons} ${styles.buttonSet}`}>
-                  <Button kind="secondary" size="xl" onClick={handleResetFields} className={styles.button}>
-                    {t('resetFields', 'Reset fields')}
+                <div
+                  className={`${isTablet && styles.paddedButtons} ${
+                    styles.buttonSet
+                  }`}
+                >
+                  <Button
+                    kind="secondary"
+                    size="xl"
+                    onClick={handleResetFields}
+                    className={styles.button}
+                  >
+                    {t("resetFields", "Reset fields")}
                   </Button>
-                  <Button type="submit" kind="primary" size="xl" className={styles.button}>
-                    {t('apply', 'Apply')}{' '}
-                    {filtersApplied ? `(${filtersApplied} ${t('countOfFiltersApplied', 'filters applied')})` : null}
+                  <Button
+                    type="submit"
+                    kind="primary"
+                    size="xl"
+                    className={styles.button}
+                  >
+                    {t("apply", "Apply")}{" "}
+                    {filtersApplied
+                      ? `(${filtersApplied} ${t(
+                          "countOfFiltersApplied",
+                          "filters applied"
+                        )})`
+                      : null}
                   </Button>
                 </div>
               </form>
@@ -283,38 +356,45 @@ const RefineSearch: React.FC<RefineSearchProps> = ({ setFilters, inTabletOrOverl
 
   return (
     <form onSubmit={handleSubmit} className={styles.refineSeachContainer}>
-      <h2 className={styles.productiveHeading02}>{t('refineSearch', 'Refine search')}</h2>
+      <h2 className={styles.productiveHeading02}>
+        {t("refineSearch", "Refine search")}
+      </h2>
       <div className={styles.field}>
         <div className={styles.labelText}>
-          <label className={`${styles.sexLabelText} ${styles.label01}`} htmlFor="#gender">
-            {t('sex', 'Sex')}
+          <label
+            className={`${styles.sexLabelText} ${styles.label01}`}
+            htmlFor="#gender"
+          >
+            {t("sex", "Sex")}
           </label>
         </div>
         <ContentSwitcher
           id="gender"
           onChange={handleGenderChange}
-          selectedIndex={['any', 'male', 'female'].indexOf(formState.gender)}>
-          <Switch name="any" text={t('any', 'Any')} />
-          <Switch name="male" text={t('male', 'Male')} />
-          <Switch name="female" text={t('female', 'Female')} />
+          selectedIndex={["any", "male", "female"].indexOf(formState.gender)}
+        >
+          <Switch name="any" text={t("any", "Any")} />
+          <Switch name="male" text={t("male", "Male")} />
+          <Switch name="female" text={t("female", "Female")} />
         </ContentSwitcher>
         <ContentSwitcher
           id="gender"
           onChange={handleGenderChange}
-          selectedIndex={['other', 'unknown'].indexOf(formState.gender)}>
-          <Switch name="other" text={t('other', 'Other')} />
-          <Switch name="unknown" text={t('unknown', 'Unknown')} />
+          selectedIndex={["other", "unknown"].indexOf(formState.gender)}
+        >
+          <Switch name="other" text={t("other", "Other")} />
+          <Switch name="unknown" text={t("unknown", "Unknown")} />
         </ContentSwitcher>
       </div>
       <div className={`${styles.field} ${styles.dobFields}`}>
         <NumberInput
           id="dateOfBirth"
           placeholder="DD"
-          value={formState.dateOfBirth || ''}
+          value={formState.dateOfBirth || ""}
           onChange={handleDateOfBirthChange}
           className={styles.dobField}
           type="number"
-          label={t('day', 'Day')}
+          label={t("day", "Day")}
           min={1}
           max={31}
           light
@@ -324,11 +404,11 @@ const RefineSearch: React.FC<RefineSearchProps> = ({ setFilters, inTabletOrOverl
         <NumberInput
           id="monthOfBirth"
           placeholder="MM"
-          value={formState.monthOfBirth || ''}
+          value={formState.monthOfBirth || ""}
           onChange={handleMonthOfBirthChange}
           className={styles.dobField}
           type="number"
-          label={t('month', 'Month')}
+          label={t("month", "Month")}
           min={1}
           max={12}
           allowEmpty
@@ -338,11 +418,11 @@ const RefineSearch: React.FC<RefineSearchProps> = ({ setFilters, inTabletOrOverl
         <NumberInput
           id="yearOfBirth"
           placeholder="YYYY"
-          value={formState.yearOfBirth || ''}
+          value={formState.yearOfBirth || ""}
           onChange={handleYearOfBirthChange}
           className={styles.dobField}
           type="number"
-          label={t('year', 'Year')}
+          label={t("year", "Year")}
           allowEmpty
           hideSteppers
           light
@@ -353,10 +433,10 @@ const RefineSearch: React.FC<RefineSearchProps> = ({ setFilters, inTabletOrOverl
       <div className={styles.field}>
         <NumberInput
           id="age"
-          value={formState.age || ''}
+          value={formState.age || ""}
           onChange={handleAgeChange}
-          size={isTablet ? 'lg' : 'md'}
-          label={t('age', 'Age')}
+          size={isTablet ? "lg" : "md"}
+          label={t("age", "Age")}
           min={0}
           light
           allowEmpty
@@ -366,10 +446,10 @@ const RefineSearch: React.FC<RefineSearchProps> = ({ setFilters, inTabletOrOverl
       <div className={styles.field}>
         <NumberInput
           id="phoneNumber"
-          label={t('phoneNumber', 'Phone number')}
+          label={t("phoneNumber", "Phone number")}
           onChange={handlePhoneNumberChange}
           type="number"
-          value={formState.phoneNumber || ''}
+          value={formState.phoneNumber || ""}
           light
           allowEmpty
           hideSteppers
@@ -379,19 +459,34 @@ const RefineSearch: React.FC<RefineSearchProps> = ({ setFilters, inTabletOrOverl
       <div className={styles.field}>
         <TextInput
           id="postcode"
-          labelText={t('postcode', 'Postcode')}
+          labelText={t("postcode", "Postcode")}
           onChange={handlePostCodeChange}
           value={formState.postcode}
           light
         />
       </div>
       <hr className={`${styles.field} ${styles.horizontalDivider}`} />
-      <Button type="submit" kind="primary" size="md" className={`${styles.field} ${styles.button}`}>
-        {t('apply', 'Apply')}{' '}
-        {filtersApplied ? `(${filtersApplied} ${t('countOfFiltersApplied', 'filters applied')})` : null}
+      <Button
+        type="submit"
+        kind="primary"
+        size="md"
+        className={`${styles.field} ${styles.button}`}
+      >
+        {t("apply", "Apply")}{" "}
+        {filtersApplied
+          ? `(${filtersApplied} ${t(
+              "countOfFiltersApplied",
+              "filters applied"
+            )})`
+          : null}
       </Button>
-      <Button kind="secondary" size="md" onClick={handleResetFields} className={`${styles.field} ${styles.button}`}>
-        {t('resetFields', 'Reset fields')}
+      <Button
+        kind="secondary"
+        size="md"
+        onClick={handleResetFields}
+        className={`${styles.field} ${styles.button}`}
+      >
+        {t("resetFields", "Reset fields")}
       </Button>
     </form>
   );

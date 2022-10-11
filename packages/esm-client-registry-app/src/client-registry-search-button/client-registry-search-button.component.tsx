@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Button } from '@carbon/react';
-import { Search } from '@carbon/react/icons';
-import ClientRegistryOverlay from '../client-registry-overlay/client-registry-overlay.component';
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Button } from "@carbon/react";
+import { Search } from "@carbon/react/icons";
+import ClientRegistryOverlay from "../client-registry-overlay/client-registry-overlay.component";
 
 interface ClientRegistrySearchButtonProps {
   buttonText?: string;
@@ -35,8 +35,9 @@ const ClientRegistrySearchButton: React.FC<ClientRegistrySearchButtonProps> = ({
         aria-label="Search Patient Button"
         aria-labelledby="Search Patient Button"
         renderIcon={(props) => <Search size={20} {...props} />}
-        {...buttonProps}>
-        {buttonText ? buttonText : t('searchPatient', 'Search Patient')}
+        {...buttonProps}
+      >
+        {buttonText ? buttonText : t("searchPatient", "Search Patient")}
       </Button>
     </>
   );

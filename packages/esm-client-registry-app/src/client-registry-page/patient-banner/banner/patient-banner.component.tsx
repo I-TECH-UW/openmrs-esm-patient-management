@@ -1,7 +1,16 @@
-import React, { MouseEvent } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Button, ButtonSkeleton, SkeletonIcon, SkeletonText } from '@carbon/react';
-import { ChevronDown, ChevronUp, OverflowMenuVertical } from '@carbon/react/icons';
+import React, { MouseEvent } from "react";
+import { useTranslation } from "react-i18next";
+import {
+  Button,
+  ButtonSkeleton,
+  SkeletonIcon,
+  SkeletonText,
+} from "@carbon/react";
+import {
+  ChevronDown,
+  ChevronUp,
+  OverflowMenuVertical,
+} from "@carbon/react/icons";
 import {
   ExtensionSlot,
   age,
@@ -11,12 +20,11 @@ import {
   interpolateString,
   useConfig,
   ConfigurableLink,
-} from '@openmrs/esm-framework';
-import { SearchedPatient } from '../../../types';
-import ContactDetails from '../contact-details/contact-details.component';
-import CustomOverflowMenuComponent from '../ui-components/overflow-menu.component';
-import styles from './patient-banner.scss';
-import { R4 } from '@ahryman40k/ts-fhir-types';
+} from "@openmrs/esm-framework";
+import ContactDetails from "../contact-details/contact-details.component";
+import CustomOverflowMenuComponent from "../ui-components/overflow-menu.component";
+import styles from "./patient-banner.scss";
+import { R4 } from "@ahryman40k/ts-fhir-types";
 
 interface PatientBannerProps {
   patient: R4.IPatient;
@@ -42,12 +50,20 @@ const PatientBanner: React.FC<PatientBannerProps> = ({
   const config = useConfig();
 
   const patientActionsSlotState = React.useMemo(
-    () => ({ patientUuid, selectPatientAction, onTransition, launchPatientChart: true }),
-    [patientUuid, selectPatientAction, onTransition],
+    () => ({
+      patientUuid,
+      selectPatientAction,
+      onTransition,
+      launchPatientChart: true,
+    }),
+    [patientUuid, selectPatientAction, onTransition]
   );
 
   const patientName = patient.name[0].text;
-  const patientPhotoSlotState = React.useMemo(() => ({ patientUuid, patientName }), [patientUuid, patientName]);
+  const patientPhotoSlotState = React.useMemo(
+    () => ({ patientUuid, patientName }),
+    [patientUuid, patientName]
+  );
 
   const [showContactDetails, setShowContactDetails] = React.useState(false);
   const toggleContactDetails = React.useCallback((event: MouseEvent) => {
@@ -57,7 +73,10 @@ const PatientBanner: React.FC<PatientBannerProps> = ({
 
   const patientAvatar = (
     <div className={styles.patientAvatar} role="img">
-      <ExtensionSlot extensionSlotName="patient-photo-slot" state={patientPhotoSlotState} />
+      <ExtensionSlot
+        extensionSlotName="patient-photo-slot"
+        state={patientPhotoSlotState}
+      />
     </div>
   );
 
@@ -68,14 +87,14 @@ const PatientBanner: React.FC<PatientBannerProps> = ({
 
   const getGender = (gender) => {
     switch (gender) {
-      case 'M':
-        return t('male', 'Male');
-      case 'F':
-        return t('female', 'Female');
-      case 'O':
-        return t('other', 'Other');
-      case 'U':
-        return t('unknown', 'Unknown');
+      case "M":
+        return t("male", "Male");
+      case "F":
+        return t("female", "Female");
+      case "O":
+        return t("other", "Other");
+      case "U":
+        return t("unknown", "Unknown");
       default:
         return gender;
     }
@@ -89,7 +108,10 @@ const PatientBanner: React.FC<PatientBannerProps> = ({
             patientUuid: patientUuid,
           })}/${encodeURIComponent(config.search.redirectToPatientDashboard)}`}
           onClick={(evt) => selectPatientAction(evt, patientUuid)}
-          className={`${styles.patientBanner} ${selectPatientAction && styles.patientAvatarButton}`}>
+          className={`${styles.patientBanner} ${
+            selectPatientAction && styles.patientAvatarButton
+          }`}
+        >
           {patientAvatar}
           <div className={`${styles.patientNameRow} ${styles.patientInfo}`}>
             <div className={styles.flexRow}>
@@ -101,11 +123,19 @@ const PatientBanner: React.FC<PatientBannerProps> = ({
               />
             </div>
             <div className={styles.demographics}>
-              <span>{getGender(patient.gender)}</span> &middot; <span>{age(patient.birthDate)}</span>{' '}
-              &middot; <span>{formatDate(parseDate(patient.birthDate), { mode: 'wide', time: false })}</span>
+              <span>{getGender(patient.gender)}</span> &middot;{" "}
+              <span>{age(patient.birthDate)}</span> &middot;{" "}
+              <span>
+                {formatDate(parseDate(patient.birthDate), {
+                  mode: "wide",
+                  time: false,
+                })}
+              </span>
             </div>
             <div className={styles.identifiers}>
-              {patient.identifier?.length ? patient.identifier.map((i) => i.value).join(', ') : '--'}
+              {patient.identifier?.length
+                ? patient.identifier.map((i) => i.value).join(", ")
+                : "--"}
             </div>
           </div>
         </ConfigurableLink>
@@ -115,11 +145,17 @@ const PatientBanner: React.FC<PatientBannerProps> = ({
               <CustomOverflowMenuComponent
                 menuTitle={
                   <>
-                    <span className={styles.actionsButtonText}>{t('actions', 'Actions')}</span>{' '}
-                    <OverflowMenuVertical size={16} style={{ marginLeft: '0.5rem' }} />
+                    <span className={styles.actionsButtonText}>
+                      {t("actions", "Actions")}
+                    </span>{" "}
+                    <OverflowMenuVertical
+                      size={16}
+                      style={{ marginLeft: "0.5rem" }}
+                    />
                   </>
                 }
-                dropDownMenu={showDropdown}>
+                dropDownMenu={showDropdown}
+              >
                 <ExtensionSlot
                   onClick={closeDropdownMenu}
                   extensionSlotName="patient-search-actions-slot"
@@ -143,13 +179,18 @@ const PatientBanner: React.FC<PatientBannerProps> = ({
               renderIcon={showContactDetails ? ChevronUp : ChevronDown}
               iconDescription="Toggle contact details"
               onClick={toggleContactDetails}
-              style={{ marginTop: '-0.25rem' }}>
-              {showContactDetails ? t('showLess', 'Show less') : t('showAllDetails', 'Show all details')}
+              style={{ marginTop: "-0.25rem" }}
+            >
+              {showContactDetails
+                ? t("showLess", "Show less")
+                : t("showAllDetails", "Show all details")}
             </Button>
           )}
         </div>
       </div>
-      {showContactDetails && <ContactDetails address={patient.address} patientId={patient.id} />}
+      {showContactDetails && (
+        <ContactDetails address={patient.address} patientId={patient.id} />
+      )}
     </>
   );
 };

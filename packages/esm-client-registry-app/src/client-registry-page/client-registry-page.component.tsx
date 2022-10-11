@@ -1,24 +1,27 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { isDesktop, navigate, useLayoutType } from '@openmrs/esm-framework';
-import styles from './client-registry-page.scss';
-import ClientRegistryOverlay from '../client-registry-overlay/client-registry-overlay.component';
-import ClientRegistrySearchComponent from './client-registry-search.component';
-import ClientRegistrySearchBar from '../client-registry-search-bar/client-registry-search-bar.component';
-import { useTranslation } from 'react-i18next';
-import { debounce } from 'lodash-es';
+import { isDesktop, navigate, useLayoutType } from "@openmrs/esm-framework";
+import { debounce } from "lodash-es";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router-dom";
+
+import ClientRegistryOverlay from "../client-registry-overlay/client-registry-overlay.component";
+import ClientRegistrySearchBar from "../client-registry-search-bar/client-registry-search-bar.component";
+import styles from "./client-registry-page.scss";
+import ClientRegistrySearchComponent from "./client-registry-search.component";
 
 interface ClientRegistryPageComponentProps {}
 
-const ClientRegistryPageComponent: React.FC<ClientRegistryPageComponentProps> = () => {
+const ClientRegistryPageComponent: React.FC<
+  ClientRegistryPageComponentProps
+> = () => {
   const [searchParams] = useSearchParams();
   const layout = useLayoutType();
 
-  const query = searchParams?.get('query') ?? ''
+  const query = searchParams?.get("query") ?? "";
 
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState(query);
-  const handleClear = useCallback(() => setSearchTerm(''), [setSearchTerm]);
+  const handleClear = useCallback(() => setSearchTerm(""), [setSearchTerm]);
   const showSearchResults = useMemo(() => !!searchTerm?.trim(), [searchTerm]);
 
   useEffect(() => {
@@ -33,7 +36,7 @@ const ClientRegistryPageComponent: React.FC<ClientRegistryPageComponentProps> = 
 
   const handleCloseOverlay = useCallback(() => {
     navigate({
-      to: window['getOpenmrsSpaBase'](),
+      to: window["getOpenmrsSpaBase"](),
     });
   }, []);
 
@@ -54,7 +57,10 @@ const ClientRegistryPageComponent: React.FC<ClientRegistryPageComponentProps> = 
       </div>
     </div>
   ) : (
-    <ClientRegistryOverlay onClose={handleCloseOverlay} query={searchParams?.get('query') ?? ''} />
+    <ClientRegistryOverlay
+      onClose={handleCloseOverlay}
+      query={searchParams?.get("query") ?? ""}
+    />
   );
 };
 

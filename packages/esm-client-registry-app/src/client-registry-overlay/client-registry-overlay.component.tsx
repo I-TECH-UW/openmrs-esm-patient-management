@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { PatientUuid } from '@openmrs/esm-framework';
-import Overlay from '../ui-components/overlay';
-import ClientRegistrySearchBar from '../client-registry-search-bar/client-registry-search-bar.component';
-import debounce from 'lodash-es/debounce';
-import ClientRegistrySearchComponent from '../client-registry-page/client-registry-search.component';
+import { PatientUuid } from "@openmrs/esm-framework";
+import debounce from "lodash-es/debounce";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+
+import ClientRegistrySearchComponent from "../client-registry-page/client-registry-search.component";
+import ClientRegistrySearchBar from "../client-registry-search-bar/client-registry-search-bar.component";
+import Overlay from "../ui-components/overlay";
 
 interface ClientRegistryOverlayProps {
   onClose: () => void;
@@ -15,13 +16,13 @@ interface ClientRegistryOverlayProps {
 
 const ClientRegistryOverlay: React.FC<ClientRegistryOverlayProps> = ({
   onClose,
-  query = '',
+  query = "",
   header,
   selectPatientAction,
 }) => {
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState(query);
-  const handleClear = useCallback(() => setSearchTerm(''), [setSearchTerm]);
+  const handleClear = useCallback(() => setSearchTerm(""), [setSearchTerm]);
   const showSearchResults = useMemo(() => !!searchTerm?.trim(), [searchTerm]);
 
   useEffect(() => {
@@ -35,7 +36,10 @@ const ClientRegistryOverlay: React.FC<ClientRegistryOverlayProps> = ({
   }, 300);
 
   return (
-    <Overlay header={header ?? t('searchResults', 'Search results')} close={onClose}>
+    <Overlay
+      header={header ?? t("searchResults", "Search results")}
+      close={onClose}
+    >
       <ClientRegistrySearchBar
         initialSearchTerm={query}
         onSubmit={onSearchQueryChange}

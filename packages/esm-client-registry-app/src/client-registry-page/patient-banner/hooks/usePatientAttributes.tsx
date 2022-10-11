@@ -1,9 +1,9 @@
-import { openmrsFetch, useConfig } from '@openmrs/esm-framework';
-import useSWRImmutable from 'swr/immutable';
-import { Patient } from '../types';
+import { openmrsFetch, useConfig } from "@openmrs/esm-framework";
+import useSWRImmutable from "swr/immutable";
+import { Patient } from "../types";
 
 const customRepresentation =
-  'custom:(uuid,display,identifiers:(identifier,uuid,preferred,location:(uuid,name),identifierType:(uuid,name,format,formatDescription,validator)),person:(uuid,display,gender,birthdate,dead,age,deathDate,birthdateEstimated,causeOfDeath,preferredName:(uuid,preferred,givenName,middleName,familyName),attributes,preferredAddress:(uuid,preferred,address1,address2,cityVillage,longitude,stateProvince,latitude,country,postalCode,countyDistrict,address3,address4,address5,address6,address7)))';
+  "custom:(uuid,display,identifiers:(identifier,uuid,preferred,location:(uuid,name),identifierType:(uuid,name,format,formatDescription,validator)),person:(uuid,display,gender,birthdate,dead,age,deathDate,birthdateEstimated,causeOfDeath,preferredName:(uuid,preferred,givenName,middleName,familyName),attributes,preferredAddress:(uuid,preferred,address1,address2,cityVillage,longitude,stateProvince,latitude,country,postalCode,countyDistrict,address3,address4,address5,address6,address7)))";
 
 /**
  *  React hook that takes patientUuid and return Patient Attributes {@link Attribute}
@@ -13,7 +13,7 @@ const customRepresentation =
 export const usePatientAttributes = (patientUuid: string) => {
   const { data, error } = useSWRImmutable<{ data: Patient }>(
     `/ws/rest/v1/patient/${patientUuid}?v=${customRepresentation}`,
-    openmrsFetch,
+    openmrsFetch
   );
 
   return {
@@ -33,7 +33,7 @@ export const usePatientContactAttributes = (patientUuid: string) => {
   const { contactAttributeType } = useConfig();
   const { attributes, isLoading } = usePatientAttributes(patientUuid);
   const contactAttributes = attributes.filter(({ attributeType }) =>
-    contactAttributeType?.some((uuid) => attributeType.uuid === uuid),
+    contactAttributeType?.some((uuid) => attributeType.uuid === uuid)
   );
   return {
     contactAttributes: contactAttributes ?? [],

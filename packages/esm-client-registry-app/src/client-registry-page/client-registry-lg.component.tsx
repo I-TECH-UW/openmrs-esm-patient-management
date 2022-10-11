@@ -1,17 +1,23 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import isEmpty from 'lodash-es/isEmpty';
-import { interpolateString, navigate, useConfig, usePagination } from '@openmrs/esm-framework';
-import Pagination from '../ui-components/pagination/pagination.component';
-import styles from './client-registry-lg.scss';
+import { R4 } from "@ahryman40k/ts-fhir-types";
 import {
+  interpolateString,
+  navigate,
+  useConfig,
+  usePagination,
+} from "@openmrs/esm-framework";
+import isEmpty from "lodash-es/isEmpty";
+import React, { useCallback, useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+
+import Pagination from "../ui-components/pagination/pagination.component";
+import styles from "./client-registry-lg.scss";
+import {
+  ClientRegistryResults,
   EmptyQueryIllustration,
   EmptySearchResultsIllustration,
   FetchErrorIllustration,
   LoadingSearchResults,
-  ClientRegistryResults,
-} from './client-registry-views';
-import { R4 } from '@ahryman40k/ts-fhir-types';
+} from "./client-registry-views";
 
 interface ClientRegistryComponentProps {
   query: string;
@@ -39,14 +45,12 @@ const ClientRegistryComponent: React.FC<ClientRegistryComponentProps> = ({
   const resultsToShow = inTabletOrOverlay ? 15 : 5;
   const totalResults = searchResults.length;
 
-  const { results, goTo, totalPages, currentPage, showNextButton, paginated } = usePagination(
-    searchResults,
-    resultsToShow,
-  );
+  const { results, goTo, totalPages, currentPage, showNextButton, paginated } =
+    usePagination(searchResults, resultsToShow);
 
   useEffect(() => {
     goTo(1);
-  }, [query]);
+  }, [query, goTo]);
 
   const handlePatientSelection = useCallback(
     (evt, patientUuid: string) => {
@@ -64,7 +68,7 @@ const ClientRegistryComponent: React.FC<ClientRegistryComponentProps> = ({
         hidePanel();
       }
     },
-    [config, selectPatientAction, hidePanel],
+    [config, selectPatientAction, hidePanel]
   );
 
   const searchResultsView = useMemo(() => {
@@ -81,27 +85,52 @@ const ClientRegistryComponent: React.FC<ClientRegistryComponentProps> = ({
     }
 
     if (isEmpty(results)) {
-      return <EmptySearchResultsIllustration inTabletOrOverlay={inTabletOrOverlay} />;
+      return (
+        <EmptySearchResultsIllustration inTabletOrOverlay={inTabletOrOverlay} />
+      );
     }
 
-    return <ClientRegistryResults searchResults={results} handlePatientSelection={handlePatientSelection} />;
-  }, [query, isLoading, inTabletOrOverlay, results, handlePatientSelection, fetchError]);
+    return (
+      <ClientRegistryResults
+        searchResults={results}
+        handlePatientSelection={handlePatientSelection}
+      />
+    );
+  }, [
+    query,
+    isLoading,
+    inTabletOrOverlay,
+    results,
+    handlePatientSelection,
+    fetchError,
+  ]);
 
   return (
-    <div className={`${!inTabletOrOverlay ? styles.searchResultsDesktop : styles.searchResultsTabletOrOverlay}`}>
+    <div
+      className={`${
+        !inTabletOrOverlay
+          ? styles.searchResultsDesktop
+          : styles.searchResultsTabletOrOverlay
+      }`}
+    >
       <div className={`${stickyPagination && styles.broadBottomMargin}`}>
         <h2
           className={`${styles.resultsHeader} ${styles.productiveHeading02} ${
             inTabletOrOverlay && styles.leftPaddedResultHeader
-          }`}>
+          }`}
+        >
           {!isLoading
-            ? `${totalResults ?? 0} ${t('seachResultsSmall', 'search results')}`
-            : t('searchingText', 'Searching...')}
+            ? `${totalResults ?? 0} ${t("seachResultsSmall", "search results")}`
+            : t("searchingText", "Searching...")}
         </h2>
         {searchResultsView}
       </div>
       {paginated && (
-        <div className={`${styles.pagination} ${stickyPagination && styles.stickyPagination}`}>
+        <div
+          className={`${styles.pagination} ${
+            stickyPagination && styles.stickyPagination
+          }`}
+        >
           <Pagination
             setCurrentPage={goTo}
             currentPage={currentPage}

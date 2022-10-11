@@ -1,7 +1,8 @@
-import React, { useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Button, Search } from '@carbon/react';
-import styles from './client-registry-search-bar.scss';
+import { Button, Search } from "@carbon/react";
+import React, { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
+
+import styles from "./client-registry-search-bar.scss";
 
 interface ClientRegistrySearchBarProps {
   buttonProps?: Object;
@@ -30,7 +31,7 @@ const ClientRegistrySearchBar: React.FC<ClientRegistrySearchBarProps> = ({
       }
       setSearchTerm(val);
     },
-    [onChange, setSearchTerm],
+    [onChange, setSearchTerm]
   );
 
   const handleSubmit = useCallback(
@@ -38,7 +39,7 @@ const ClientRegistrySearchBar: React.FC<ClientRegistrySearchBarProps> = ({
       evt.preventDefault();
       onSubmit(searchTerm);
     },
-    [searchTerm, onSubmit],
+    [searchTerm, onSubmit]
   );
 
   return (
@@ -46,16 +47,25 @@ const ClientRegistrySearchBar: React.FC<ClientRegistrySearchBarProps> = ({
       <Search
         autoFocus
         className={styles.patientSearchInput}
-        closeButtonLabelText={t('clearSearch', 'Clear')}
+        closeButtonLabelText={t("clearSearch", "Clear")}
         labelText=""
         onChange={(event) => handleChange(event.target.value)}
         onClear={onClear}
-        placeholder={t('searchForPatient', 'Search for a patient in the Client Registry')}
-        size={small ? 'sm' : 'lg'}
+        placeholder={t(
+          "searchForPatient",
+          "Search for a patient in the Client Registry"
+        )}
+        size={small ? "sm" : "lg"}
         value={searchTerm}
       />
-      <Button type="submit" kind="secondary" size={small ? 'sm' : 'lg'} onClick={handleSubmit} {...buttonProps}>
-        {t('search', 'Search')}
+      <Button
+        type="submit"
+        kind="secondary"
+        size={small ? "sm" : "lg"}
+        onClick={handleSubmit}
+        {...buttonProps}
+      >
+        {t("search", "Search")}
       </Button>
     </form>
   );

@@ -1,19 +1,24 @@
-import { useReducer } from 'react';
-import { AdvancedPatientSearchAction, AdvancedPatientSearchActionTypes, AdvancedPatientSearchState } from '../types';
+import { useReducer } from "react";
+
+import {
+  AdvancedPatientSearchAction,
+  AdvancedPatientSearchActionTypes,
+  AdvancedPatientSearchState,
+} from "../types";
 
 export const initialState: AdvancedPatientSearchState = {
-  gender: 'any',
+  gender: "any",
   dateOfBirth: 0,
   monthOfBirth: 0,
   yearOfBirth: 0,
   phoneNumber: 0,
-  postcode: '',
+  postcode: "",
   age: 0,
 };
 
 const reducer: (
   state: AdvancedPatientSearchState,
-  action: AdvancedPatientSearchAction,
+  action: AdvancedPatientSearchAction
 ) => AdvancedPatientSearchState = (state, action) => {
   switch (action.type) {
     case AdvancedPatientSearchActionTypes.SET_GENDER:

@@ -1,12 +1,13 @@
-import { R4 } from '@ahryman40k/ts-fhir-types';
-import { PatientGenderKind } from '@ahryman40k/ts-fhir-types/lib/R4';
-import React, { useEffect, useMemo, useState } from 'react';
-import { useClientRegistrySearch } from '../client-registry-search.resource';
-import { AdvancedPatientSearchState } from '../types';
-import styles from './advanced-patient-search.scss';
-import { initialState } from './advanced-search-reducer';
-import ClientRegistryComponent from './client-registry-lg.component';
-import RefineSearch from './refine-search.component';
+import { R4 } from "@ahryman40k/ts-fhir-types";
+import { PatientGenderKind } from "@ahryman40k/ts-fhir-types/lib/R4";
+import React, { useEffect, useMemo, useState } from "react";
+
+import { useClientRegistrySearch } from "../cr-searcher/cr-searcher.resource";
+import { AdvancedPatientSearchState } from "../types";
+import styles from "./advanced-patient-search.scss";
+import { initialState } from "./advanced-search-reducer";
+import ClientRegistryComponent from "./client-registry-lg.component";
+import RefineSearch from "./refine-search.component";
 
 interface ClientRegistrySearchProps {
   query: string;
@@ -23,7 +24,8 @@ const ClientRegistrySearchComponent: React.FC<ClientRegistrySearchProps> = ({
   inTabletOrOverlay,
   hidePanel,
 }) => {
-  const [filters, setFilters] = useState<AdvancedPatientSearchState>(initialState);
+  const [filters, setFilters] =
+    useState<AdvancedPatientSearchState>(initialState);
   const filtersApplied = useMemo(() => {
     let count = 0;
     Object.entries(filters).forEach(([key, value]) => {
@@ -44,17 +46,29 @@ const ClientRegistrySearchComponent: React.FC<ClientRegistrySearchProps> = ({
   const filteredResults = useMemo(() => {
     if (searchResults && searchResults.entry && filtersApplied) {
       return searchResults.entry.filter((patient: R4.IPatient) => {
-        if (filters.gender !== 'any') {
-          if (filters.gender === 'male' && patient.gender !== PatientGenderKind._male) {
+        if (filters.gender !== "any") {
+          if (
+            filters.gender === "male" &&
+            patient.gender !== PatientGenderKind._male
+          ) {
             return false;
           }
-          if (filters.gender === 'female' && patient.gender !== PatientGenderKind._female) {
+          if (
+            filters.gender === "female" &&
+            patient.gender !== PatientGenderKind._female
+          ) {
             return false;
           }
-          if (filters.gender === 'other' && patient.gender !== PatientGenderKind._other) {
+          if (
+            filters.gender === "other" &&
+            patient.gender !== PatientGenderKind._other
+          ) {
             return false;
           }
-          if (filters.gender === 'unknown' && patient.gender !== PatientGenderKind._unknown) {
+          if (
+            filters.gender === "unknown" &&
+            patient.gender !== PatientGenderKind._unknown
+          ) {
             return false;
           }
         }
@@ -113,17 +127,27 @@ const ClientRegistrySearchComponent: React.FC<ClientRegistrySearchProps> = ({
   return (
     <div
       className={`${
-        inTabletOrOverlay ? styles.advancedPatientSearchTabletOrOverlay : styles.advancedPatientSearchDesktop
-      }`}>
+        inTabletOrOverlay
+          ? styles.advancedPatientSearchTabletOrOverlay
+          : styles.advancedPatientSearchDesktop
+      }`}
+    >
       {!inTabletOrOverlay && (
         <div className={styles.refineSearchDesktop}>
-          <RefineSearch filtersApplied={filtersApplied} setFilters={setFilters} inTabletOrOverlay={inTabletOrOverlay} />
+          <RefineSearch
+            filtersApplied={filtersApplied}
+            setFilters={setFilters}
+            inTabletOrOverlay={inTabletOrOverlay}
+          />
         </div>
       )}
       <div
         className={`${
-          inTabletOrOverlay ? styles.patientSearchResultsTabletOrOverlay : styles.patientSearchResultsDesktop
-        }`}>
+          inTabletOrOverlay
+            ? styles.patientSearchResultsTabletOrOverlay
+            : styles.patientSearchResultsDesktop
+        }`}
+      >
         <ClientRegistryComponent
           query={query}
           stickyPagination={stickyPagination}
@@ -136,7 +160,11 @@ const ClientRegistrySearchComponent: React.FC<ClientRegistrySearchProps> = ({
         />
       </div>
       {inTabletOrOverlay && (
-        <RefineSearch filtersApplied={filtersApplied} setFilters={setFilters} inTabletOrOverlay={inTabletOrOverlay} />
+        <RefineSearch
+          filtersApplied={filtersApplied}
+          setFilters={setFilters}
+          inTabletOrOverlay={inTabletOrOverlay}
+        />
       )}
     </div>
   );

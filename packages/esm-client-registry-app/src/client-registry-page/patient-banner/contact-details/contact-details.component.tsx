@@ -1,11 +1,10 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { SkeletonText } from '@carbon/react';
-import { useRelationships } from './relationships.resource';
-import { usePatientContactAttributes } from '../hooks/usePatientAttributes';
-import { Address as AddressType } from '../../../types';
-import styles from './contact-details.scss';
-import { R4 } from '@ahryman40k/ts-fhir-types';
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { SkeletonText } from "@carbon/react";
+import { useRelationships } from "./relationships.resource";
+import { usePatientContactAttributes } from "../hooks/usePatientAttributes";
+import styles from "./contact-details.scss";
+import { R4 } from "@ahryman40k/ts-fhir-types";
 
 interface ContactDetailsProps {
   address: Array<R4.IAddress>;
@@ -17,7 +16,7 @@ const Address: React.FC<{ address: R4.IAddress }> = ({ address }) => {
 
   return (
     <>
-      <p className={styles.heading}>{t('address', 'Address')}</p>
+      <p className={styles.heading}>{t("address", "Address")}</p>
       <ul>
         {address ? (
           <>
@@ -28,7 +27,7 @@ const Address: React.FC<{ address: R4.IAddress }> = ({ address }) => {
             <li>{address.country}</li>
           </>
         ) : (
-          '--'
+          "--"
         )}
       </ul>
     </>
@@ -37,11 +36,12 @@ const Address: React.FC<{ address: R4.IAddress }> = ({ address }) => {
 
 const Contact: React.FC<{ patientUuid: string }> = ({ patientUuid }) => {
   const { t } = useTranslation();
-  const { isLoading, contactAttributes } = usePatientContactAttributes(patientUuid);
+  const { isLoading, contactAttributes } =
+    usePatientContactAttributes(patientUuid);
 
   return (
     <>
-      <p className={styles.heading}>{t('contactDetails', 'Contact Details')}</p>
+      <p className={styles.heading}>{t("contactDetails", "Contact Details")}</p>
       <ul>
         {isLoading ? (
           <SkeletonText />
@@ -52,7 +52,7 @@ const Contact: React.FC<{ patientUuid: string }> = ({ patientUuid }) => {
             </li>
           ))
         ) : (
-          '--'
+          "--"
         )}
       </ul>
     </>
@@ -65,7 +65,7 @@ const Relationships: React.FC<{ patientId: string }> = ({ patientId }) => {
 
   return (
     <>
-      <p className={styles.heading}>{t('relationships', 'Relationships')}</p>
+      <p className={styles.heading}>{t("relationships", "Relationships")}</p>
       <>
         {isLoading ? (
           <SkeletonText />
@@ -75,19 +75,24 @@ const Relationships: React.FC<{ patientId: string }> = ({ patientId }) => {
               <li key={r.uuid} className={styles.relationship}>
                 <div>{r.display}</div>
                 <div>{r.relationshipType}</div>
-                <div>{`${r.relativeAge} ${r.relativeAge === 1 ? 'yr' : 'yrs'}`}</div>
+                <div>{`${r.relativeAge} ${
+                  r.relativeAge === 1 ? "yr" : "yrs"
+                }`}</div>
               </li>
             ))}
           </ul>
         ) : (
-          '--'
+          "--"
         )}
       </>
     </>
   );
 };
 
-const ContactDetails: React.FC<ContactDetailsProps> = ({ address, patientId }) => {
+const ContactDetails: React.FC<ContactDetailsProps> = ({
+  address,
+  patientId,
+}) => {
   const currentAddress = address ? address[0] : undefined;
 
   return (

@@ -1,13 +1,16 @@
-import { openmrsFetch } from '@openmrs/esm-framework';
-import useSWR from 'swr';
+import { openmrsFetch } from "@openmrs/esm-framework";
+import useSWR from "swr";
 
 const customRepresentation =
-  'custom:(display,uuid,personA:(age,display,birthdate,uuid),personB:(age,display,birthdate,uuid),relationshipType:(uuid,display,description,aIsToB,bIsToA))';
+  "custom:(display,uuid,personA:(age,display,birthdate,uuid),personB:(age,display,birthdate,uuid),relationshipType:(uuid,display,description,aIsToB,bIsToA))";
 
 export function useRelationships(patientUuid: string) {
-  const { data, error, isValidating } = useSWR<{ data: RelationshipsResponse }, Error>(
+  const { data, error, isValidating } = useSWR<
+    { data: RelationshipsResponse },
+    Error
+  >(
     `/ws/rest/v1/relationship?v=${customRepresentation}&person=${patientUuid}`,
-    openmrsFetch,
+    openmrsFetch
   );
 
   const formattedRelationships = data?.data?.results?.length
@@ -24,7 +27,7 @@ export function useRelationships(patientUuid: string) {
 
 function extractRelationshipData(
   patientIdentifier: string,
-  relationships: Array<Relationship>,
+  relationships: Array<Relationship>
 ): Array<ExtractedRelationship> {
   const relationshipsData = [];
   for (const r of relationships) {

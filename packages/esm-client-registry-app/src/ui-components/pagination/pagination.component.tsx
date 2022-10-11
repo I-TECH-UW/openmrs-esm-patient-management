@@ -1,8 +1,8 @@
-import React, { useCallback, useMemo } from 'react';
-import { Button } from '@carbon/react';
-import { CaretLeft, CaretRight } from '@carbon/react/icons';
-import styles from './pagination.scss';
-import { useTranslation } from 'react-i18next';
+import React, { useCallback, useMemo } from "react";
+import { Button } from "@carbon/react";
+import { CaretLeft, CaretRight } from "@carbon/react/icons";
+import styles from "./pagination.scss";
+import { useTranslation } from "react-i18next";
 
 interface PaginationProps {
   hasMore: boolean;
@@ -10,7 +10,12 @@ interface PaginationProps {
   setCurrentPage: (page: number) => void;
   totalPages?: number;
 }
-const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, setCurrentPage, hasMore }) => {
+const Pagination: React.FC<PaginationProps> = ({
+  totalPages,
+  currentPage,
+  setCurrentPage,
+  hasMore,
+}) => {
   const { t } = useTranslation();
   const decrementPage = useCallback(() => {
     setCurrentPage(Math.max(1, currentPage - 1));
@@ -29,8 +34,11 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, setCur
         key={index}
         kind="ghost"
         onClick={() => setCurrentPage(index + left)}
-        className={`${styles.paginationButton} ${index + left === currentPage && styles.activeButton}`}
-        type="button">
+        className={`${styles.paginationButton} ${
+          index + left === currentPage && styles.activeButton
+        }`}
+        type="button"
+      >
         {index + left}
       </Button>
     ));
@@ -46,7 +54,7 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, setCur
         type="button"
         kind="ghost"
         hasIconOnly
-        iconDescription={t('previousPage', 'Previous page')}
+        iconDescription={t("previousPage", "Previous page")}
         renderIcon={CaretLeft}
         onClick={decrementPage}
         disabled={currentPage == 1}
@@ -55,7 +63,7 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, setCur
       <Button
         kind="ghost"
         hasIconOnly
-        iconDescription={t('nextPage', 'Next page')}
+        iconDescription={t("nextPage", "Next page")}
         renderIcon={CaretRight}
         onClick={incrementPage}
         disabled={!hasMore && currentPage === totalPages}
