@@ -2,9 +2,9 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ClientRegistryPageComponent from './client-registry-page/client-registry-page.component';
 
-const PatientSearchRootComponent: React.FC = () => {
+const ClientRegistryRootComponent: React.FC = () => {
   return (
-    <BrowserRouter basename={`${window['getOpenmrsSpaBase']()}search`}>
+    <BrowserRouter basename={`${window['getOpenmrsSpaBase']()}cr`}>
       <Routes>
         <Route path="" element={<ClientRegistryPageComponent />} />
       </Routes>
@@ -12,4 +12,4 @@ const PatientSearchRootComponent: React.FC = () => {
   );
 };
 
-export default PatientSearchRootComponent;
+export default ClientRegistryRootComponent;

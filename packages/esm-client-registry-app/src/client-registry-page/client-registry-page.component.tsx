@@ -1,9 +1,12 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { isDesktop, navigate, useLayoutType } from '@openmrs/esm-framework';
 import styles from './client-registry-page.scss';
 import ClientRegistryOverlay from '../client-registry-overlay/client-registry-overlay.component';
 import ClientRegistrySearchComponent from './client-registry-search.component';
+import ClientRegistrySearchBar from '../client-registry-search-bar/client-registry-search-bar.component';
+import { useTranslation } from 'react-i18next';
+import { debounce } from 'lodash-es';
 
 interface ClientRegistryPageComponentProps {}
 
@@ -11,9 +14,23 @@ const ClientRegistryPageComponent: React.FC<ClientRegistryPageComponentProps> = 
   const [searchParams] = useSearchParams();
   const layout = useLayoutType();
 
-  // If a user directly falls on openmrs/spa/search?query= in a tablet view.
-  // On clicking the <- on the overlay should take the user on the home page.
-  // P.S. The user will never be directed to the patient search page (above URL) in a tablet view otherwise.
+  const query = searchParams?.get('query') ?? ''
+
+  const { t } = useTranslation();
+  const [searchTerm, setSearchTerm] = useState(query);
+  const handleClear = useCallback(() => setSearchTerm(''), [setSearchTerm]);
+  const showSearchResults = useMemo(() => !!searchTerm?.trim(), [searchTerm]);
+
+  useEffect(() => {
+    if (query) {
+      setSearchTerm(query);
+    }
+  }, [query]);
+
+  const onSearchQueryChange = debounce((val) => {
+    setSearchTerm(val);
+  }, 300);
+
   const handleCloseOverlay = useCallback(() => {
     navigate({
       to: window['getOpenmrsSpaBase'](),
@@ -23,8 +40,14 @@ const ClientRegistryPageComponent: React.FC<ClientRegistryPageComponentProps> = 
   return isDesktop(layout) ? (
     <div className={styles.patientSearchPage}>
       <div className={styles.patientSearchComponent}>
+        <ClientRegistrySearchBar
+          initialSearchTerm={query}
+          onSubmit={onSearchQueryChange}
+          onChange={onSearchQueryChange}
+          onClear={handleClear}
+        />
         <ClientRegistrySearchComponent
-          query={searchParams?.get('query') ?? ''}
+          query={query}
           inTabletOrOverlay={!isDesktop(layout)}
           stickyPagination
         />

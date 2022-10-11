@@ -32,31 +32,10 @@ function setupOpenMRS() {
 
   defineConfigSchema(moduleName, configSchema);
 
-  setupDynamicOfflineDataHandler({
-    id: 'esm-client-registry-app:patient',
-    type: 'patient',
-    displayName: 'Client registry search',
-    async isSynced(patientUuid) {
-      const expectedUrls = [`/ws/fhir2/R4/Patient/${patientUuid}`];
-      const absoluteExpectedUrls = expectedUrls.map((url) => window.origin + makeUrl(url));
-      const cache = await caches.open('omrs-spa-cache-v1');
-      const keys = (await cache.keys()).map((key) => key.url);
-      return absoluteExpectedUrls.every((url) => keys.includes(url));
-    },
-    async sync(patientUuid) {
-      await messageOmrsServiceWorker({
-        type: 'registerDynamicRoute',
-        pattern: `/ws/fhir2/R4/Patient/${patientUuid}`,
-      });
-
-      await fetchCurrentPatient(patientUuid);
-    },
-  });
-
   return {
     pages: [
       {
-        route: /^search/,
+        route: /^cr/,
         load: getAsyncLifecycle(() => import('./root.component'), options),
       },
     ],

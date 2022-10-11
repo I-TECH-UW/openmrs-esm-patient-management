@@ -42,7 +42,7 @@ const ClientRegistrySearchComponent: React.FC<ClientRegistrySearchProps> = ({
   } = useClientRegistrySearch(query, !!query);
 
   const filteredResults = useMemo(() => {
-    if (searchResults.entry && filtersApplied) {
+    if (searchResults && searchResults.entry && filtersApplied) {
       return searchResults.entry.filter((patient: R4.IPatient) => {
         if (filters.gender !== 'any') {
           if (filters.gender === 'male' && patient.gender !== PatientGenderKind._male) {
@@ -107,7 +107,7 @@ const ClientRegistrySearchComponent: React.FC<ClientRegistrySearchProps> = ({
       });
     }
 
-    return searchResults.entry;
+    return searchResults ? searchResults.entry : [];
   }, [filtersApplied, filters, searchResults]);
 
   return (

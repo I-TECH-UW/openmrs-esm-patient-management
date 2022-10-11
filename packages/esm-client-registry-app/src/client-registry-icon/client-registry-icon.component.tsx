@@ -12,58 +12,35 @@ interface ClientRegistryLaunchProps {}
 const ClientRegistryLaunch: React.FC<ClientRegistryLaunchProps> = () => {
   const { t } = useTranslation();
   const layout = useLayoutType();
-  // const { page } = useParams();
+  const { page } = useParams();
+  const isSearchPage = useMemo(() => page === 'cr', [page]);
   const [searchParams] = useSearchParams();
-  const initialSearchTerm = searchParams.get('query');
-  const isSearchPage = true;
-
-  const [showSearchInput, setShowSearchInput] = useState(false);
-  const [canClickOutside, setCanClickOutside] = useState(false);
+  const initialSearchTerm = isSearchPage ? searchParams.get('query') : '';
 
   const handleGlobalAction = useCallback(() => {
-    if (showSearchInput) {
-      if (isSearchPage) {
-        navigate({
-          to: window.localStorage.getItem('searchReturnUrl') ?? '${openmrsSpaBase}/',
-        });
-        window.localStorage.removeItem('searchReturnUrl');
-      }
-      setShowSearchInput(false);
-    } else {
-      setShowSearchInput(false);
-    }
-  }, [isSearchPage, setShowSearchInput, showSearchInput]);
-
-  const resetToInitialState = useCallback(() => {
-    setShowSearchInput(false);
-    setCanClickOutside(false);
-  }, [setShowSearchInput, setCanClickOutside]);
-
-  useEffect(() => {
-    // Search input should always be open when we direct to the search page.
-    setShowSearchInput(isSearchPage);
     if (isSearchPage) {
-      setCanClickOutside(false);
+      navigate({
+        to: window.localStorage.getItem('searchReturnUrl') ?? '${openmrsSpaBase}/',
+      });
+      window.localStorage.removeItem('searchReturnUrl');
+    } else {
+      window.localStorage.setItem('searchReturnUrl', window.location.pathname);
+      navigate({
+        to: `\${openmrsSpaBase}/cr?query=${encodeURIComponent(initialSearchTerm)}`,
+      });
     }
   }, [isSearchPage]);
 
-  useEffect(() => {
-    showSearchInput ? setCanClickOutside(true) : setCanClickOutside(false);
-  }, [showSearchInput]);
-
-
   return (
     <div className={styles.patientSearchIconWrapper}>
-      <ClientRegistryOverlay onClose={handleGlobalAction} query={initialSearchTerm} />
-
-      <div className={`${showSearchInput && styles.closeButton}`}>
+      <div className={`${isSearchPage && styles.closeButton}`}>
         <HeaderGlobalAction
           aria-label={t('searchClientRegistry', 'Search Client Registry')}
           aria-labelledby="Search Client Registry"
-          className={`${showSearchInput ? styles.activeSearchIconButton : styles.searchIconButton}`}
+          className={`${isSearchPage ? styles.activeSearchIconButton : styles.searchIconButton}`}
           name="ClientRegistryIcon"
           onClick={handleGlobalAction}>
-          {showSearchInput ? <Close size={20} /> : <LocationPerson size={20} />}
+          { isSearchPage ? <Close size={20} /> : <LocationPerson size={20} />}
         </HeaderGlobalAction>
       </div>
     </div>
