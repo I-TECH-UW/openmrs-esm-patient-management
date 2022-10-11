@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  o3:
+    container_name: o3
+    image: openmrs/openmrs-reference-application-3-gateway:dev3
+    depends_on:
+      - o3-frontend
+      - o3-backend
+    ports:
+      - "80:80"
+    volumes:
+      - ./config/o3/nginx.conf:/etc/nginx/nginx.conf
+    # extra_hosts:
+    #   - "host.docker.internal:host-gateway"
+    # tty: true
+    # stdin_open: true
+    # entrypoint: sh
+    
+  o3-frontend:
+    container_name: o3-frontend
+    hostname: frontend
+    image: openmrs/openmrs-reference-application-3-frontend:dev3
+    environment:
+      SPA_PATH: /openmrs/spa
+      API_URL: /openmrs
+      SPA_CONFIG_URLS:
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      timeout: 5s
+    volumes:
+      - ./config/o3/importmap.json:/usr/share/nginx/html/importmap.json
+  
+  o3-backend:
+    container_name: o3-backend
+    hostname: backend
+    platform: linux/arm64/v8
+    image: openmrs/openmrs-reference-application-3-backend:dev3
+    depends_on:
+      - o3-db
+    environment:
+      OMRS_CONFIG_MODULE_WEB_ADMIN: "true"
+      OMRS_CONFIG_AUTO_UPDATE_DATABASE: "true"
+      OMRS_CONFIG_CREATE_TABLES: "true"
+      OMRS_CONFIG_CONNECTION_SERVER: o3-db
+      OMRS_CONFIG_CONNECTION_DATABASE: openmrs
+      OMRS_CONFIG_CONNECTION_USERNAME: ${OPENMRS_DB_USER:-openmrs}
+      OMRS_CONFIG_CONNECTION_PASSWORD: ${OPENMRS_DB_PASSWORD:-openmrs}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/openmrs"]
+      timeout: 5s
+    volumes:
+      - /openmrs/data
+    ports:
+      - "8088:8080"
+    
+  # MariaDB
+  o3-db:
+    container_name: o3-db
+    hostname: o3-db
+    image: mariadb:10.8.5
+    platform: linux/arm64/v8
+    command: "mysqld --character-set-server=utf8 --collation-server=utf8_general_ci"
+    environment:
+      MYSQL_DATABASE: openmrs
+      MYSQL_USER: ${OPENMRS_DB_USER:-openmrs}
+      MYSQL_PASSWORD: ${OPENMRS_DB_PASSWORD:-openmrs}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-openmrs}
+    volumes:
+      - /var/lib/mysql

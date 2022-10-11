@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { HeaderGlobalAction } from '@carbon/react';
-import { Close, Search } from '@carbon/react/icons';
+import { Close, Search, LocationPerson } from '@carbon/react/icons';
 import { isDesktop, navigate, useLayoutType, useOnClickOutside } from '@openmrs/esm-framework';
 import PatientSearchOverlay from '../patient-search-overlay/patient-search-overlay.component';
 import CompactPatientSearchComponent from '../compact-patient-search/compact-patient-search.component';
@@ -83,7 +83,7 @@ const PatientSearchLaunch: React.FC<PatientSearchLaunchProps> = () => {
           className={`${showSearchInput ? styles.activeSearchIconButton : styles.searchIconButton}`}
           name="SearchPatientIcon"
           onClick={handleGlobalAction}>
-          {showSearchInput ? <Close size={20} /> : <Search size={20} />}
+          {showSearchInput ? <Close size={20} /> : <LocationPerson size={20} />}
         </HeaderGlobalAction>
       </div>
     </div>

@@ -12,6 +12,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ahryman40k/ts-fhir-types@npm:^4.0.39":
+  version: 4.0.39
+  resolution: "@ahryman40k/ts-fhir-types@npm:4.0.39"
+  dependencies:
+    fp-ts: ^2.11.8
+    io-ts: ^2.2.16
+    reflect-metadata: ^0.1.13
+  checksum: d65b85d569079ef1ba696490190c5a31d2f4913c468a9f8b498fb93377e231c4ccdeadacf954b50ae40da521b46ed5eedc6720a2edb5fdbbf959ea07681973e2
+  languageName: node
+  linkType: hard
+
 "@ampproject/remapping@npm:^2.1.0":
   version: 2.2.0
   resolution: "@ampproject/remapping@npm:2.2.0"
@@ -3540,6 +3551,22 @@ __metadata:
   checksum: 8674122bc2f859d7415f6b11faa1742b6c0c4e9639d880cd13c59f0adebd531fdd3dc6f7afbfa84370a6766a8bc8dab6f0361d401d04d3240e9c529150b6ec3d
   languageName: node
   linkType: hard
+
+"@openmrs/esm-client-registry-app@workspace:packages/esm-client-registry-app":
+  version: 0.0.0-use.local
+  resolution: "@openmrs/esm-client-registry-app@workspace:packages/esm-client-registry-app"
+  dependencies:
+    "@ahryman40k/ts-fhir-types": ^4.0.39
+    "@carbon/react": ^1.12.0
+    lodash-es: ^4.17.15
+    webpack: ^5.74.0
+  peerDependencies:
+    "@openmrs/esm-framework": 4.x
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
+  languageName: unknown
+  linkType: soft
 
 "@openmrs/esm-config@npm:^4.0.2":
   version: 4.0.2
@@ -9839,6 +9866,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fp-ts@npm:^2.11.8":
+  version: 2.12.3
+  resolution: "fp-ts@npm:2.12.3"
+  checksum: 398acad3d8c5fbd4b0ee420bbb57a45cd98f54e22d6240fc3ee88a7c9967536cba9285c858d37251f9dea137d767a0ff2354203046ba9a149c064fd8de9fe0e3
+  languageName: node
+  linkType: hard
+
 "fraction.js@npm:^4.2.0":
   version: 4.2.0
   resolution: "fraction.js@npm:4.2.0"
@@ -11342,6 +11376,15 @@ __metadata:
   dependencies:
     loose-envify: ^1.0.0
   checksum: cc3182d793aad82a8d1f0af697b462939cb46066ec48bbf1707c150ad5fad6406137e91a262022c269702e01621f35ef60269f6c0d7fd178487959809acdfb14
+  languageName: node
+  linkType: hard
+
+"io-ts@npm:^2.2.16":
+  version: 2.2.18
+  resolution: "io-ts@npm:2.2.18"
+  peerDependencies:
+    fp-ts: ^2.5.0
+  checksum: 8b5a22b0ccc0dd24a2520d9dc27095e144b86426c7cc5ce7a406d1f9cbbde2aa450632e6f3fb435817b6b56ecebea434b049feb2c6752fce0b810787295bf15f
   languageName: node
   linkType: hard
 
@@ -16202,6 +16245,13 @@ __metadata:
     indent-string: ^4.0.0
     strip-indent: ^3.0.0
   checksum: fa1ef20404a2d399235e83cc80bd55a956642e37dd197b4b612ba7327bf87fa32745aeb4a1634b2bab25467164ab4ed9c15be2c307923dd08b0fe7c52431ae6b
+  languageName: node
+  linkType: hard
+
+"reflect-metadata@npm:^0.1.13":
+  version: 0.1.13
+  resolution: "reflect-metadata@npm:0.1.13"
+  checksum: 798d379a7b6f6455501145419505c97dd11cbc23857a386add2b9ef15963ccf15a48d9d15507afe01d4cd74116df8a213247200bac00320bd7c11ddeaa5e8fb4
   languageName: node
   linkType: hard
 

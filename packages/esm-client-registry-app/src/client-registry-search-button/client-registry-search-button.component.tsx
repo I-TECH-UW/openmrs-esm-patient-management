@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Button } from '@carbon/react';
-import { Query } from '@carbon/react/icons';
-import PatientSearchOverlay from '../patient-search-overlay/patient-search-overlay.component';
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Button } from "@carbon/react";
+import { Search } from "@carbon/react/icons";
+import ClientRegistryOverlay from "../client-registry-overlay/client-registry-overlay.component";
 
-interface PatientSearchButtonProps {L
+interface ClientRegistrySearchButtonProps {
   buttonText?: string;
   overlayHeader?: string;
   selectPatientAction?: (patientUuid: string) => {};
   buttonProps?: Object;
 }
 
-const PatientSearchButton: React.FC<PatientSearchButtonProps> = ({
+const ClientRegistrySearchButton: React.FC<ClientRegistrySearchButtonProps> = ({
   buttonText,
   overlayHeader,
   selectPatientAction,
@@ -23,7 +23,7 @@ const PatientSearchButton: React.FC<PatientSearchButtonProps> = ({
   return (
     <>
       {showSearchOverlay && (
-        <PatientSearchOverlay
+        <ClientRegistryOverlay
           onClose={() => setShowSearchOverlay(false)}
           header={overlayHeader}
           selectPatientAction={selectPatientAction}
@@ -34,12 +34,13 @@ const PatientSearchButton: React.FC<PatientSearchButtonProps> = ({
         onClick={() => setShowSearchOverlay(true)}
         aria-label="Search Patient Button"
         aria-labelledby="Search Patient Button"
-        renderIcon={(props) => <Query size={20} {...props} />}
-        {...buttonProps}>
-        {buttonText ? buttonText : t('searchPatient', 'Search Patient')}
+        renderIcon={(props) => <Search size={20} {...props} />}
+        {...buttonProps}
+      >
+        {buttonText ? buttonText : t("searchPatient", "Search Patient")}
       </Button>
     </>
   );
 };
 
-export default PatientSearchButton;
+export default ClientRegistrySearchButton;
